@@ -1,0 +1,102 @@
+// out: ../../public/main.css, compress: true, sourceMap: false
+@import "../../node_modules/@fortawesome/fontawesome-free/css/all.css";
+@import "./drag-drop.less";
+* {
+	box-sizing: border-box;
+	padding: 0;
+    margin: 0;
+    font-family: Verdana;
+    font-size: 15px;
+}
+
+body,
+html {
+	padding: 0;
+	margin: 0;
+	width: 100%;
+	height: 100%;
+	background-color: #2f2f2f;
+}
+input {
+	&:not([type='radio']),
+	&:not([type='checkbox']) {
+		padding: .5em;
+	}
+	&.with-icon {
+		padding-left: 2.2em;
+	}
+}
+main {
+	width: 100%;
+	height: 100%;
+}
+aside {
+	width: 30em;
+	height: 100%;
+	overflow: auto;
+    padding: 1em;
+    flex-basis: 25em;
+    flex-shrink: 0;
+}
+#root {
+	height: 100%;
+	width: 100%;
+}
+.app {
+	height: 100%;
+}
+.search-label {
+	position: absolute;
+}
+.search-dropdown {
+	color: white;
+}
+.flex {
+	display: flex;
+}
+.flex-grow-1 {
+	flex-grow: 1;
+}
+.flex-justify-between {
+	justify-content: space-between;
+}
+.flex-justify-center {
+	justify-content: center;
+}
+.flex-align-center {
+	align-items: center;
+}
+ul.search-dropdown {
+	list-style: none;
+	display: block;
+    width: 100%;
+    max-height: ~"calc(100% - 37px)";
+    overflow: auto;
+	li {
+        display: block;
+        color: black;
+        background-color: white;
+        border: 1px solid darkgray;
+        padding: 7px 12px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #d8d8d8;
+        }
+	}
+}
+.search-box {
+    position: relative;
+}
+#search-input {
+    max-width: 100%;
+}
+@media (max-width: 1000px) {
+    .app.flex {
+        flex-direction: column;
+    }
+    aside {
+        width: 100%;
+        flex-basis: 250px;
+    }
+}
