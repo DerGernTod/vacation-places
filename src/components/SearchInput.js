@@ -27,7 +27,7 @@ export class SearchInput extends React.Component {
                     isFetching: this.state.isFetching - 1,
                     searchResults: result.results
                 });
-            }, 2000)
+            }, 1000)
         });
     }
     handleResultClicked(result) {
