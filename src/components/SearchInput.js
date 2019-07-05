@@ -11,22 +11,29 @@ export class SearchInput extends React.Component {
             timeoutId: -1
         }
     }
+    async search(val) {
+        const fetchRequest = forwardSearchLocation(val || this.state.searchVal);
+        this.setState({
+            isFetching: this.state.isFetching + 1
+        });
+        const result = await fetchRequest;
+        // if it's 0, we aborted the search basically
+        if (this.state.isFetching > 0) {
+            const resultsArray = result.results;
+            resultsArray.sort((a, b) => b.confidence - a.confidence);
+            this.setState({
+                isFetching: Math.max(0, this.state.isFetching - 1),
+                searchResults: result.results
+            });
+        }
+    }
     handleSearchChange(e) {
         clearTimeout(this.state.timeoutId);
+        const val = e.target.value;
         this.setState({
-            searchVal: e.target.value,
-            timeoutId: setTimeout(async () => {
-                const fetchRequest = forwardSearchLocation(this.state.searchVal);
-                this.setState({
-                    isFetching: this.state.isFetching + 1
-                });
-                const result = await fetchRequest;
-                const resultsArray = result.results;
-                resultsArray.sort((a, b) => b.confidence - a.confidence);
-                this.setState({
-                    isFetching: this.state.isFetching - 1,
-                    searchResults: result.results
-                });
+            searchVal: val,
+            timeoutId: setTimeout(() => {
+                this.search(val);
             }, 1000)
         });
     }
@@ -37,6 +44,16 @@ export class SearchInput extends React.Component {
             searchVal: ''
         });
         this.props.onResultAdded(result);
+    }
+    handleSearchBlur() {
+    }
+    handleSearchKeyUp(e) {
+        if (e.key === 'Enter') {
+            this.setState({
+                searchVal: e.target.value
+            });
+            this.search(e.target.value);
+        }
     }
     render() {
         return (
@@ -54,6 +71,8 @@ export class SearchInput extends React.Component {
                         id='search-input'
                         value={this.state.searchVal}
                         onChange={(e) => this.handleSearchChange(e)}
+                        onKeyUp={(e) => this.handleSearchKeyUp(e)}
+                        onBlur={(e) => this.handleSearchBlur(e)}
                         placeholder='Search...'
                         className='flex-grow-1 with-icon'
                     ></input>
