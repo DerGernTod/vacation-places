@@ -2,6 +2,8 @@ import React from 'react';
 import { SearchInput } from './components/SearchInput';
 import RLDD from 'react-list-drag-and-drop/lib/RLDD';
 import { MAPBOX_GL_TOKEN } from './api-constants';
+import { SolidCrossSvg } from './components/SolidCrossSvg';
+import L from 'leaflet';
 const mapboxGl = require('mapbox-gl/dist/mapbox-gl.js');
 mapboxGl.accessToken = MAPBOX_GL_TOKEN;
 
@@ -14,10 +16,27 @@ export class App extends React.Component {
 		};
 	}
 	componentDidMount() {
+		// const myMap = L.map('map').setView([51.505, -0.09], 13);
+		// L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+		// 	attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+		// 	maxZoom: 18,
+		// 	id: 'mapbox.streets',
+		// 	accessToken: MAPBOX_GL_TOKEN
+		// }).addTo(myMap);
 		window.map = new mapboxGl.Map({
 			container: 'map',
 			style: 'mapbox://styles/mapbox/streets-v11'
 		});
+	}
+	componentDidUpdate() {
+		
+		this.state.locations.forEach(item => new mapboxGl.Marker()
+			.setLngLat([item.geometry.lng, item.geometry.lat])
+			.addTo(window.map));
+
+		// var polyline = L.polyline(latlngs, {color: 'red'}).addTo(window.map);
+		// zoom the map to the polyline
+		// window.map.fitBounds(polyline.getBounds());
 	}
 	handleRLDDChange(newLocations) {
 		this.setState({
@@ -53,15 +72,20 @@ export class App extends React.Component {
 								<div>
 									{item.formatted}
 								</div>
-								<img alt="delete"
-									onClick={() => this.handleDelete(item)}
-									src="./images/cross-solid.svg" />
+								<div className="flex-gap-1em"></div>
+								<div className="delete-item">
+									<SolidCrossSvg
+										onClick={() => this.handleDelete(item)}
+									/>
+								</div>
 							</div>
 						)}
 						onChange={(res) => this.handleRLDDChange(res)}
 					/>
 				</aside>
-				<main id="map" className="flex-grow-1" />
+				<main className="flex-grow-1">
+					<div id="map"></div>
+				</main>
 			</div>
 		);
 	}
