@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { SearchInput } from './components/SearchInput';
 import RLDD from 'react-list-drag-and-drop/lib/RLDD';
 import { MAPBOX_GL_TOKEN } from './api-constants';
@@ -7,14 +7,12 @@ import { Map, Marker, Popup, TileLayer, Polyline } from 'react-leaflet';
 const mapboxGl = require('mapbox-gl/dist/mapbox-gl.js');
 mapboxGl.accessToken = MAPBOX_GL_TOKEN;
 
-export class App extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			locations: [],
-			locationIds: 0
-		};
+export class App extends Component {
+	state = {
+		locations: [],
+		locationIds: 0
 	}
+		
 	componentDidMount() {
 		const stored = JSON.parse(localStorage.getItem('travel'));
 		if (stored) {

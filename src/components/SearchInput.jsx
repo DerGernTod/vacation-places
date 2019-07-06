@@ -1,16 +1,14 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { forwardSearchLocation } from '../utils';
 
-export class SearchInput extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            searchVal: '',
-            searchResults: [],
-            isFetching: 0,
-            timeoutId: -1
-        }
+export class SearchInput extends Component {
+    state = {
+		searchVal: '',
+		searchResults: [],
+		isFetching: 0,
+		timeoutId: -1
     }
+
     async search(val) {
         const fetchRequest = forwardSearchLocation(val || this.state.searchVal);
         this.setState({
@@ -57,7 +55,7 @@ export class SearchInput extends React.Component {
     }
     render() {
         return (
-            <React.Fragment>
+            <>
                 <div className='search-box flex flex-align-center flex-justify-between'>
                     <label htmlFor='search-input' className='search-label flex flex-align-center flex-justify-center'>
                         <img alt='search' src='images/search-solid.svg' style={
@@ -86,7 +84,7 @@ export class SearchInput extends React.Component {
                         )}
                     </ul>
                 )}
-            </React.Fragment>
+            </>
         );
     }
 }
